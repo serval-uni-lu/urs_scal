@@ -66,6 +66,7 @@ data = data.join(z3, rsuffix = '_z3', on = 'file')
 data.dropna(inplace = True)
 data.to_csv('m.csv')
 
+
 def fi(data, title, inputs, mt, mm):
     print("## " + title + "\n")
     res = {}
@@ -98,10 +99,6 @@ mt = 1800
 mm = 4*10**6
 
 samplers = {'\\spur': spur, '\\unigen': ug3, 'D4': d4, 'sharpSAT': sharpSAT}
-# name = list(sys.argv)[1]
-r = {}
-# sampler = pd.read_csv(name, skipinitialspace = True, index_col = 'file')
-# r[name] = run_DT(data.join(sampler, rsuffix = '_spur', on = 'file'), "Sampler time analysis", ipk, mt, mm)
 
 
 r = {}
@@ -109,5 +106,11 @@ r = {}
 for s in samplers:
     r[s] = fi(data.join(samplers[s], rsuffix = '_sam', on = 'file'), "Sampler time analysis " + s, ipk, mt, mm) * 100
 
-print(pd.DataFrame(r, index = ipk))
-pd.DataFrame(r, index = ipk).to_csv("fi.csv")
+samplers = {'\\spur fm': spur, '\\unigen fm': ug3, 'D4 fm': d4, 'sharpSAT fm': sharpSAT}
+data = data.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
+
+for s in samplers:
+    r[s] = fi(data.join(samplers[s], rsuffix = '_sam', on = 'file'), "Sampler time analysis " + s, ipk, mt, mm) * 100
+
+print(pd.DataFrame(r, index = ipk).T)
+pd.DataFrame(r, index = ipk).T.to_csv("fi.csv")

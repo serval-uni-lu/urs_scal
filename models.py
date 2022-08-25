@@ -117,12 +117,12 @@ def class_loo(data, title, inputs, mt, mm):
     res["DT"] = c_loo(X, Y, tree.DecisionTreeClassifier(), "DT")
     res["RF 10"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=10), "RF 10")
     res["RF 100"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=100), "RF 100")
-    # res["RF 1000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=1000), "RF 1000")
+    res["RF 1000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=1000), "RF 1000")
     # res["RF 10000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=10000), "RF 10000")
     # res["RF 100000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=100000), "RF 100000")
     # res["RF 1000000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=1000000), "RF 1000000")
-    res["ERF 10"] = c_loo(X, Y, ensemble.ExtraTreesClassifier(n_estimators=10), "ERF 10")
-    res["ERF 100"] = c_loo(X, Y, ensemble.ExtraTreesClassifier(n_estimators=100), "ERF 100")
+    # res["ERF 10"] = c_loo(X, Y, ensemble.ExtraTreesClassifier(n_estimators=10), "ERF 10")
+    # res["ERF 100"] = c_loo(X, Y, ensemble.ExtraTreesClassifier(n_estimators=100), "ERF 100")
     # res["ERF 1000"] = c_loo(X, Y, ensemble.ExtraTreesClassifier(n_estimators=1000), "ERF 1000")
     # res["ABC 10"] = c_loo(X, Y, ensemble.AdaBoostClassifier(n_estimators=10), "ABC 10")
     # res["ABC 100"] = c_loo(X, Y, ensemble.AdaBoostClassifier(n_estimators=100), "ABC 100")
@@ -135,9 +135,9 @@ def class_loo(data, title, inputs, mt, mm):
     # res["HGBC 100"] = c_loo(X, Y, ensemble.HistGradientBoostingClassifier(max_iter = 100_000), "HGBC 100")
     # res["HGBC 1000"] = c_loo(X, Y, ensemble.HistGradientBoostingClassifier(max_iter = 1_000_000), "HGBC 1000")
     # res["HGBC 10000"] = c_loo(X, Y, ensemble.HistGradientBoostingClassifier(max_iter = 10_000_000), "HGBC 10000")
-    res["KNC 1"] = c_loo(X, Y, neighbors.KNeighborsClassifier(n_neighbors = 1), "KNC 1")
-    res["KNC 2"] = c_loo(X, Y, neighbors.KNeighborsClassifier(n_neighbors = 2), "KNC 2")
-    res["KNC 3"] = c_loo(X, Y, neighbors.KNeighborsClassifier(n_neighbors = 3), "KNC 3")
+    # res["KNC 1"] = c_loo(X, Y, neighbors.KNeighborsClassifier(n_neighbors = 1), "KNC 1")
+    # res["KNC 2"] = c_loo(X, Y, neighbors.KNeighborsClassifier(n_neighbors = 2), "KNC 2")
+    # res["KNC 3"] = c_loo(X, Y, neighbors.KNeighborsClassifier(n_neighbors = 3), "KNC 3")
     # res["KNC 4"] = c_loo(X, Y, neighbors.KNeighborsClassifier(n_neighbors = 4), "KNC 4")
     # res["KNC 5"] = c_loo(X, Y, neighbors.KNeighborsClassifier(n_neighbors = 5), "KNC 5")
     # res["KNC 6"] = c_loo(X, Y, neighbors.KNeighborsClassifier(n_neighbors = 6), "KNC 6")
@@ -188,7 +188,7 @@ autonumbering = true
 +++\n\n""")
 
 ipk = ['#var', 'deff', '#mis', '#eqv']
-samplers = {'SPUR': spur, 'UniGen3': ug3, 'D4': d4, 'sharpSAT': sharpSAT}
+samplers = {'\\spur': spur, '\\unigen': ug3, 'D4': d4, 'sharpSAT': sharpSAT}
 show_VIF(data, ipk)
 # ipk = ['#eqv']
 
@@ -199,6 +199,13 @@ r = {}
 for name in samplers:
     sampler = samplers[name]
     r[name] = class_loo(data.join(sampler, rsuffix = '_spur', on = 'file'), "Sampler time analysis " + name, ipk, mt, mm)
+
+samplers = {'\\spur fm': spur, '\\unigen fm': ug3, 'D4 fm': d4, 'sharpSAT fm': sharpSAT}
+data = data.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
+print(data)
+
+for s in samplers:
+    r[s] = class_loo(data.join(samplers[s], rsuffix = '_sam', on = 'file'), "Sampler time analysis " + s, ipk, mt, mm)
 
 print(pd.DataFrame(r) * 100)
 pd.DataFrame(r).to_csv("models.csv")
