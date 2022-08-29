@@ -11,6 +11,9 @@ cd eqv
 make -j2
 ```
 
+To build a singularity container use:
+```make singularity```
+
 ## Usage
 
 ```./eqv <path to cnf file>```
@@ -29,3 +32,11 @@ On debian run:
 cd wrapper
 make
 ```
+
+## usage
+
+```wrap <max memory in MB> <max time in seconds> <command with full path to executable>```
+
+The wrapper will output to stderr a lne containing the command, the state,
+the maximum amount of virtual memory used in KB and the time used in seconds.
+If the time or memory exeed the given parameters, then the program will be killed.
