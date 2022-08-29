@@ -91,7 +91,8 @@ def c_loo(X, Y, clf, t):
     print("")
 
     # return metrics.accuracy_score(Y, ype)
-    return metrics.f1_score(Y, ype)
+    # return metrics.f1_score(Y, ype)
+    return metrics.roc_auc_score(Y, ype)
 
 def class_loo(data, title, inputs, mt, mm):
     print("## " + title + "\n")
@@ -111,8 +112,11 @@ def class_loo(data, title, inputs, mt, mm):
     X_ = scaler.transform(X)
     Y = (data['time'].ge(mt).to_numpy()) | (data['mem'].ge(mm).to_numpy())
 
-    res["cnst 0"] = metrics.f1_score(Y, np.zeros(len(Y)))
-    res["cnst 1"] = metrics.f1_score(Y, np.zeros(len(Y)) + 1)
+    # res["cnst 0"] = metrics.f1_score(Y, np.zeros(len(Y)))
+    # res["cnst 1"] = metrics.f1_score(Y, np.zeros(len(Y)) + 1)
+
+    res["cnst 0"] = metrics.roc_auc_score(Y, np.zeros(len(Y)))
+    res["cnst 1"] = metrics.roc_auc_score(Y, np.zeros(len(Y)) + 1)
 
     res["DT"] = c_loo(X, Y, tree.DecisionTreeClassifier(), "DT")
     res["RF 10"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=10), "RF 10")
