@@ -63,6 +63,11 @@ data = data.join(z3, rsuffix = '_z3', on = 'file')
 # data = data[data['state_unigen3'] == 'done']
 # data = data[data['state_quicksampler'] == 'done']
 
+
+fm = data.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
+# data = data.drop(fm.index, axis = 0)
+data = fm
+
 data = data[data.tw.notnull()]
 data.dropna(inplace = True)
 data.to_csv('m.csv')
@@ -126,7 +131,7 @@ highligh = {
     '#vars': {'#clauses', '#sclauses', '#eqv', '#nodes', 'd4 time', 'deff', 'patoh'}
     , '#clauses': {'#nodes', 'd4 time', 'deff'}
     , '#sclauses': {'#nodes', 'd4 time'}
-    , '#eqv': {'#nodes', 'd4 time', 'patoh', 'log2(#nod)', 'log2(#edg)'}
+    , '#eqv': {'#nodes', 'd4 time', 'log2(#nod)', 'log2(#edg)'}
     , 'nodes': {'#edges', 'd4 time', 'deff', 'sdeff', 'patoh'}
     , 'd4 time': {'deff', 'sdeff', 'patoh'}
 }
@@ -138,8 +143,8 @@ def gen_tables(data, title):
     orig = data
     data = data[data['state'] != "mem"]
 
-    d_list = [data['#var'], data['#clause'], data['#literal'], data.t, data.k, data.s, data.tw, data['lp'], data['cost'], data['#mis'], data['#eqv'], data['time_z3'], data['mem_z3'], data.state == "timeout"]
-    n_list = ['#v', '#c', '#l', 't', 'k', 's', 'tw', 'deff', 'patoh', '#mis', '#eqv', 'time_z3', 'mem_z3', 'timeout']
+    d_list = [data['#var'], data['#clause'], data['#literal'], data.tw, data['lp'], data['#mis'], data['#eqv'], data['time_z3'], data['mem_z3'], data.state == "timeout"]
+    n_list = ['#v', '#c', '#l', 'tw', 'deff', '#mis', '#eqv', 'time_z3', 'mem_z3', 'timeout']
 
     r = correlation_matrix(d_list, n_list, highligh, stats.pointbiserialr)
     print("### Point-biserial correlation coefficient (timeout)\n")
@@ -148,8 +153,8 @@ def gen_tables(data, title):
     data = orig
     data = data[data['state'] != "timeout"]
 
-    d_list = [data['#var'], data['#clause'], data['#literal'], data.t, data.k, data.s, data.tw, data['lp'], data['cost'], data['#mis'], data['#eqv'], data['time_z3'], data['mem_z3'], data.state == "mem"]
-    n_list = ['#v', '#c', '#l', 't', 'k', 's', 'tw', 'deff', 'patoh', '#mis', '#eqv', 'time_z3', 'mem_z3', 'out of mem']
+    d_list = [data['#var'], data['#clause'], data['#literal'], data.tw, data['lp'], data['#mis'], data['#eqv'], data['time_z3'], data['mem_z3'], data.state == "mem"]
+    n_list = ['#v', '#c', '#l', 'tw', 'deff', '#mis', '#eqv', 'time_z3', 'mem_z3', 'out of mem']
 
     r = correlation_matrix(d_list, n_list, highligh, stats.pointbiserialr)
     print("### Point-biserial correlation coefficient (out of mem)\n")
@@ -159,10 +164,10 @@ def gen_tables(data, title):
     data = data[data['state'] == "done"]
     # print(data)
     # data.to_csv("tmp.csv")
-    # d_list = [data['#var'], data['#clause'], data['#literal'], data.t, data.k, data.s, data.tw, data['lp'], data['cost'], data['#mis'], data['#eqv'], data['time_ms'], data['mem_ms'], data['time_z3'], data['mem_z3'], data['time'], data['mem']]
-    # n_list = ['#v', '#c', '#l', 't', 'k', 's', 'tw', 'deff', 'patoh', '#mis', '#eqv', 'time_ms', 'mem_ms', 'time_z3', 'mem_z3', 'time', 'mem']
-    d_list = [data['#var'], data['#clause'], data['#literal'], data.t, data.k, data.s, data.tw, data['lp'], data['cost'], data['#mis'], data['#eqv'], data['time_z3'], data['mem_z3'], data['time'], data['mem']]
-    n_list = ['#v', '#c', '#l', 't', 'k', 's', 'tw', 'deff', 'patoh', '#mis', '#eqv', 'time_z3', 'mem_z3', 'time', 'mem']
+    # d_list = [data['#var'], data['#clause'], data['#literal'], data.t, data.k, data.s, data.tw, data['lp'], data['#mis'], data['#eqv'], data['time_ms'], data['mem_ms'], data['time_z3'], data['mem_z3'], data['time'], data['mem']]
+    # n_list = ['#v', '#c', '#l', 't', 'k', 's', 'tw', 'deff', '#mis', '#eqv', 'time_ms', 'mem_ms', 'time_z3', 'mem_z3', 'time', 'mem']
+    d_list = [data['#var'], data['#clause'], data['#literal'], data.t, data.k, data.s, data.tw, data['lp'], data['#mis'], data['#eqv'], data['time_z3'], data['mem_z3'], data['time'], data['mem']]
+    n_list = ['#v', '#c', '#l', 't', 'k', 's', 'tw', 'deff', '#mis', '#eqv', 'time_z3', 'mem_z3', 'time', 'mem']
 
     r = correlation_matrix(d_list, n_list, highligh, stats.kendalltau)
     print("### Kendall Correlation\n")
@@ -174,10 +179,10 @@ def gen_tables(data, title):
     print(r)
 
 
-    # d_list = [data['#var'], data['#clause'], data['#literal'], data.t, data.k, data.s, data.tw, data['lp'], data['cost'], data['#mis'], data['#eqv'], np.log2(data['time_ms']), np.log2(data['mem_ms']), np.log2(data['time_z3']), np.log2(data['mem_z3']), np.log2(data.time), np.log2(data.mem)]
-    # n_list = ['#v', '#c', '#l', 't', 'k', 's', 'tw', 'deff', 'patoh', '#mis', '#eqv', 'log2(time_ms)', 'log2(mem_ms)', 'log2(time_z3)', 'log2(mem_z3)', 'log2(time)', 'log2(mem)']
-    d_list = [data['#var'], data['#clause'], data['#literal'], data.t, data.k, data.s, data.tw, data['lp'], data['cost'], data['#mis'], data['#eqv'], np.log2(data['time_z3']), np.log2(data['mem_z3']), np.log2(data.time), np.log2(data.mem)]
-    n_list = ['#v', '#c', '#l', 't', 'k', 's', 'tw', 'deff', 'patoh', '#mis', '#eqv', 'log2(time_z3)', 'log2(mem_z3)', 'log2(time)', 'log2(mem)']
+    # d_list = [data['#var'], data['#clause'], data['#literal'], data.t, data.k, data.s, data.tw, data['lp'], data['#mis'], data['#eqv'], np.log2(data['time_ms']), np.log2(data['mem_ms']), np.log2(data['time_z3']), np.log2(data['mem_z3']), np.log2(data.time), np.log2(data.mem)]
+    # n_list = ['#v', '#c', '#l', 't', 'k', 's', 'tw', 'deff', '#mis', '#eqv', 'log2(time_ms)', 'log2(mem_ms)', 'log2(time_z3)', 'log2(mem_z3)', 'log2(time)', 'log2(mem)']
+    d_list = [data['#var'], data['#clause'], data['#literal'], data.tw, data['lp'], data['#mis'], data['#eqv'], np.log2(data['time_z3']), np.log2(data['mem_z3']), np.log2(data.time), np.log2(data.mem)]
+    n_list = ['#v', '#c', '#l', 'tw', 'deff', '#mis', '#eqv', 'log2(time_z3)', 'log2(mem_z3)', 'log2(time)', 'log2(mem)']
 
     r = correlation_matrix(d_list, n_list, highligh, stats.pearsonr)
     print("### Pearson correlation with log2 on time\n")

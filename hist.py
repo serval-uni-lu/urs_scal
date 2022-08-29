@@ -51,9 +51,10 @@ ug3 = ug3[ug3.state == 'done']
 d4 = d4[d4.state == 'done']
 sharpSAT = sharpSAT[sharpSAT.state == 'done']
 
-fm = data.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
-spur = spur.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
-ug3 = ug3.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
+# fm = data.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
+# spur = spur.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
+# ug3 = ug3.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
+fm = data
 
 
 print(data['#eqv'].min())
@@ -67,7 +68,7 @@ mpl.grid()
 
 nb_bins = 50
 
-l = [spur['#eqv'], ug3['#eqv'], fm['#eqv']]
+l = [spur['#mis'], ug3['#mis'], fm['#mis']]
 lab = ['spur', 'ug3', 'fm']
 
 mpl.hist(l, bins = nb_bins, label = lab)
