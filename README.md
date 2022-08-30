@@ -51,3 +51,10 @@ These files can be used to run the samplers and model counters with our wrapper.
 The files already contain the part mentioning the wrapper (limiting the sampler
 to 64GB of RAM and 5 hours of computation), they can thus be used like the
 samplers without the wrapper.
+
+# Benchmarks
+
+The file `Benchmarks.tar.gz` contains the dimacs files on which we conducted our experiments.
+The archive also contains the MIS of the formulas that were computed with a timeout
+of 5 hours and the equivalent formula which got simplified by propagating the equivalence
+classes.
