@@ -40,3 +40,11 @@ make
 The wrapper will output to stderr a lne containing the command, the state,
 the maximum amount of virtual memory used in KB and the time used in seconds.
 If the time or memory exeed the given parameters, then the program will be killed.
+
+# singularity
+
+The folder `/singularity` contains the scripts to create the singularity files.
+These files can be used to run the samplers and model counters with our wrapper.
+The files already contain the part mentioning the wrapper (limiting the sampler
+to 64GB of RAM and 5 hours of computation), they can thus be used like the
+samplers without the wrapper.
