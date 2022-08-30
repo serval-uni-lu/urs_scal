@@ -25,7 +25,10 @@ which variables are in which equivalence classes.
 # wrapper
 
 The folder `/wrapper` contains the code used to monitor both time and memory usage
-of a process.
+of a process. As the wrapper reads files in the `/proc` folder of the system
+it will only work on UNIX-like systems and it has only been tested on GNU/Linux.
+Maybe it could still run on other systems inside the singularity containers
+that are provided but this has not been tested.
 
 On debian run:
 ```
