@@ -195,7 +195,7 @@ katex = false
 autonumbering = true
 +++\n\n""")
 
-ipk = ['#var', 'deff', '#mis', '#eqv']
+ipk = ['#var', 'deff', '#eqv']
 samplers = {'\\spur': spur, '\\unigen': ug3}
 show_VIF(data, ipk)
 # ipk = ['#eqv']
@@ -210,4 +210,4 @@ for name in samplers:
 
 r = pd.DataFrame(r)
 print(r)
-r.to_pickle("models.pkl")
+r.to_pickle("models_n.pkl")
