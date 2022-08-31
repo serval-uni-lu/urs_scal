@@ -289,10 +289,10 @@ ipk = {  '\\#mis': ipk1
        , '\\#v, \\#c, \\tw, \\deff, \\#mis, \\#eqv': ipk8
        , '\\#v, \\tw, \\deff, \\#mis, \\#eqv': ipk9
        , '\\#v, \\tw, \\edeff, \\#mis, \\#eqv': ipk10
-       , '\\#v, \\deff, \\#mis, \\#eqv': ipk11
-       , '\\#v + deff + \\#mis': ipk12
-       , '\\#v + deff + \\#eqv': ipk13
-       , '\\#v + deff': ipk14
+       , '\\#v, \\edeff, \\#mis, \\#eqv': ipk11
+       , '\\#v + \\edeff + \\#mis': ipk12
+       , '\\#v + \\edeff + \\#eqv': ipk13
+       , '\\#v + \\edeff': ipk14
        }
 
 mt = 1800

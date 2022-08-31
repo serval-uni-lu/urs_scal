@@ -80,8 +80,8 @@ def c_loo(X, Y, clf, t):
         ype[te] = clf.predict(X_test)[0]
 
     print("### " + t + "\n")
-    print(metrics.classification_report(Y, ype, digits = 5))
-    print("")
+    # print(metrics.classification_report(Y, ype, digits = 5))
+    # print("")
 
     tn, fp, fn, tp = metrics.confusion_matrix(Y, ype).ravel()
     print("TN: " + str(tn))
@@ -92,11 +92,11 @@ def c_loo(X, Y, clf, t):
 
     # return metrics.accuracy_score(Y, ype)
     # return metrics.f1_score(Y, ype)
-    return metrics.roc_auc_score(Y, ype)
+    # return metrics.roc_auc_score(Y, ype)
+    return ype
 
 def class_loo(data, title, inputs, mt, mm):
     print("## " + title + "\n")
-    res = {}
 
     # data = data[data.state != "mem"]
     nb = len(data)
@@ -115,13 +115,16 @@ def class_loo(data, title, inputs, mt, mm):
     # res["cnst 0"] = metrics.f1_score(Y, np.zeros(len(Y)))
     # res["cnst 1"] = metrics.f1_score(Y, np.zeros(len(Y)) + 1)
 
-    res["cnst 0"] = metrics.roc_auc_score(Y, np.zeros(len(Y)))
-    res["cnst 1"] = metrics.roc_auc_score(Y, np.zeros(len(Y)) + 1)
+    # res["cnst 0"] = metrics.roc_auc_score(Y, np.zeros(len(Y)))
+    # res["cnst 1"] = metrics.roc_auc_score(Y, np.zeros(len(Y)) + 1)
 
-    res["DT"] = c_loo(X, Y, tree.DecisionTreeClassifier(), "DT")
-    res["RF 10"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=10), "RF 10")
-    res["RF 100"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=100), "RF 100")
-    res["RF 1000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=1000), "RF 1000")
+    dt = c_loo(X, Y, tree.DecisionTreeClassifier(), "DT")
+    rf_10 = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=10), "RF 10")
+    rf_100 = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=100), "RF 100")
+    rf_1000 = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=1000), "RF 1000")
+
+    res = pd.DataFrame({'real': Y, 'DT': dt, 'RF 10': rf_10, 'RF 100': rf_100, 'RF 1000': rf_1000}, index = data.index)
+
     # res["RF 10000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=10000), "RF 10000")
     # res["RF 100000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=100000), "RF 100000")
     # res["RF 1000000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=1000000), "RF 1000000")
@@ -172,7 +175,7 @@ def class_loo(data, title, inputs, mt, mm):
     # res["MLP 6.4.2"] = c_loo(X_, Y, neural_network.MLPClassifier(hidden_layer_sizes=(6, 4, 2), solver='lbfgs', max_iter = 100000), "MLP 6.4")
     # res["MLP scaled"] = c_loo(X_, Y, neural_network.MLPClassifier(hidden_layer_sizes=(5, 2), solver='lbfgs', max_iter = 100000), "MLP scaled")
 
-    print(res)
+    # print(res)
     print("\n")
     return res
 
@@ -192,7 +195,7 @@ autonumbering = true
 +++\n\n""")
 
 ipk = ['#var', 'deff', '#mis', '#eqv']
-samplers = {'\\spur': spur, '\\unigen': ug3, 'D4': d4, 'sharpSAT': sharpSAT}
+samplers = {'\\spur': spur, '\\unigen': ug3}
 show_VIF(data, ipk)
 # ipk = ['#eqv']
 
@@ -202,14 +205,8 @@ mm = 4*10**6
 r = {}
 for name in samplers:
     sampler = samplers[name]
-    r[name] = class_loo(data.join(sampler, rsuffix = '_spur', on = 'file'), "Sampler time analysis " + name, ipk, mt, mm)
+    r[name] = [class_loo(data.join(sampler, rsuffix = '_spur', on = 'file'), "Sampler time analysis " + name, ipk, mt, mm)]
 
-samplers = {'\\spur fm': spur, '\\unigen fm': ug3, 'D4 fm': d4, 'sharpSAT fm': sharpSAT}
-data = data.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
-print(data)
-
-for s in samplers:
-    r[s] = class_loo(data.join(samplers[s], rsuffix = '_sam', on = 'file'), "Sampler time analysis " + s, ipk, mt, mm)
-
-print(pd.DataFrame(r) * 100)
-pd.DataFrame(r).to_csv("models.csv")
+r = pd.DataFrame(r)
+print(r)
+r.to_pickle("models.pkl")
