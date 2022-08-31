@@ -124,6 +124,7 @@ def class_loo(data, title, inputs, mt, mm):
     rf_1000 = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=1000), "RF 1000")
 
     res = pd.DataFrame({'real': Y, 'DT': dt, 'RF 10': rf_10, 'RF 100': rf_100, 'RF 1000': rf_1000}, index = data.index)
+    # res = pd.DataFrame({'real': Y, 'DT': dt, 'RF 10': rf_10}, index = data.index)
 
     # res["RF 10000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=10000), "RF 10000")
     # res["RF 100000"] = c_loo(X, Y, ensemble.RandomForestClassifier(n_estimators=100000), "RF 100000")
