@@ -210,7 +210,8 @@ def c_loo(X, Y, clf, t):
     print("")
 
     # return metrics.accuracy_score(Y, ype)
-    return metrics.f1_score(Y, ype)
+    # return metrics.f1_score(Y, ype)
+    return ype
 
 def run_DT(data, title, inputs, mt, mm):
     print("## " + title + "\n")
@@ -223,6 +224,9 @@ def run_DT(data, title, inputs, mt, mm):
     print("nb elems: " + str(nb))
     print("nb to: " + str(nbt))
     print("cnst precision: " + str(max(nbt / nb, (nb - nbt) / nb))) 
+
+    # if nbt == 0:
+        # return -1
 
     X = data[inputs].to_numpy()
     scaler = StandardScaler()
@@ -240,7 +244,7 @@ def run_DT(data, title, inputs, mt, mm):
     # print(clf.feature_importances_)
     # tree.export_graphviz(clf, out_file="r.dot", class_names=True, feature_names = ["#var", "#cls", "#eqv"])
 
-    return res["DT"]
+    return pd.DataFrame({'real': Y, 'pred': res["DT"]}, index = data.index)
 
 def show_VIF(data, keys):
     print("## VIF\n")
@@ -267,18 +271,25 @@ ipk14 = ['#var', 'deff']
 # show_VIF(data, ipk)
 # ipk = ['#eqv']
 
-samplers = {'\\spur': spur, '\\unigen': ug3, 'D4': d4, 'sharpSAT': sharpSAT}
+spur_fm = spur.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
+ug3_fm = ug3.filter(regex = "(FeatureModel|FMEasy)", axis = 0)
+
+spur_nfm = spur.drop(ug3.index, axis = 0)
+ug3_nfm = ug3.drop(ug3.index, axis = 0)
+
+# samplers = {'\\spur': spur, '\\unigen': ug3, '\\spur (FM)': spur_fm, '\\unigen (FM)': ug3_fm, '\\spur (non-FM)': spur_nfm, '\\unigen (non-FM)': ug3_nfm}
+samplers = {'\\spur': spur, '\\unigen': ug3}
 ipk = {  '\\#mis': ipk1
        , '\\#eqv': ipk2
-       , 'deff': ipk3
+       , '\\edeff': ipk3
        , '\\#v': ipk4
        , '\\#c': ipk5
        , 'all': ipk6
-       , '-\\z': ipk7
-       , '-\\#l': ipk8
-       , '-\\#c': ipk9
-       , '-\\delta + deff': ipk10
-       , '-\\tw': ipk11
+       , '\\#v, \\#c, \\#l, \\tw, \\deff, \\#mis, \\#eqv': ipk7
+       , '\\#v, \\#c, \\tw, \\deff, \\#mis, \\#eqv': ipk8
+       , '\\#v, \\tw, \\deff, \\#mis, \\#eqv': ipk9
+       , '\\#v, \\tw, \\edeff, \\#mis, \\#eqv': ipk10
+       , '\\#v, \\deff, \\#mis, \\#eqv': ipk11
        , '\\#v + deff + \\#mis': ipk12
        , '\\#v + deff + \\#eqv': ipk13
        , '\\#v + deff': ipk14
@@ -295,8 +306,8 @@ r = {}
 for k in ipk:
     l = {}
     for s in samplers:
-        l[s] = run_DT(data.join(samplers[s], rsuffix = '_sam', on = 'file'), "Sampler time analysis", ipk[k], mt, mm) * 100
+        l[s] = run_DT(data.join(samplers[s], rsuffix = '_sam', on = 'file'), "Sampler time analysis", ipk[k], mt, mm) * 1
     r[k] = l
 
 print(pd.DataFrame(r).T)
-pd.DataFrame(r).T.to_csv("f1_p.csv")
+pd.DataFrame(r).T.to_pickle("rf_100_n.pkl")
