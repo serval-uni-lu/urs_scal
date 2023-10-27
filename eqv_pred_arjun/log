@@ -1,0 +1,63 @@
+## VIF
+
+#var: 167.56337576819
+#clause: 43344.68209788665
+#literal: 1445.623473835531
+tw: 13.675912852012237
+lp: 32312.023751030847
+#mis: 1.280770801618103
+time_z3: 1.3154782316808447
+mem_z3: 3.0845454211567604
+
+
+## Sampler time analysis \spur
+
+nb elems: 423
+nb to: 62
+cnst precision: 0.8534278959810875
+## Sampler time analysis \unigen
+
+nb elems: 423
+nb to: 209
+cnst precision: 0.5059101654846335
+## Sampler time analysis D4
+
+nb elems: 423
+nb to: 53
+cnst precision: 0.8747044917257684
+## Sampler time analysis sharpSAT
+
+nb elems: 423
+nb to: 62
+cnst precision: 0.8534278959810875
+## Sampler time analysis \spur fm
+
+nb elems: 132
+nb to: 5
+cnst precision: 0.9621212121212122
+## Sampler time analysis \unigen fm
+
+nb elems: 132
+nb to: 126
+cnst precision: 0.9545454545454546
+## Sampler time analysis D4 fm
+
+nb elems: 132
+nb to: 5
+cnst precision: 0.9621212121212122
+## Sampler time analysis sharpSAT fm
+
+nb elems: 132
+nb to: 5
+cnst precision: 0.9621212121212122
+                  #var    #clause   #literal  ...       #mis   time_z3     mem_z3
+\spur         5.084651  16.535883  21.385410  ...   3.656380  2.518019   8.339835
+\unigen      26.496482  22.069401  16.570365  ...  13.899048  1.713702   4.374394
+D4            4.818178  21.174500  18.745811  ...   4.291502  2.944112  11.338255
+sharpSAT      4.923027  18.226045  19.533743  ...   3.890165  3.205635   8.434009
+\spur fm      9.026797  17.282245  16.797813  ...   8.516276  0.804572  11.762412
+\unigen fm   19.783697  19.691890  20.192301  ...  20.123396  1.179235   0.246915
+D4 fm        10.322988  15.012718  17.793872  ...   7.506645  1.245983  11.729256
+sharpSAT fm  14.934734  15.362887  13.264216  ...  15.818816  5.492127  13.985648
+
+[8 rows x 8 columns]

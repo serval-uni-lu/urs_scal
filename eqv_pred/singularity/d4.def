@@ -1,0 +1,29 @@
+BootStrap: docker
+From: ubuntu:22.04
+
+%files
+    ../wrapper /wrapper
+
+%post
+    echo "setup start"
+    apt-get -y update
+
+    #apt-get -y full-upgrade
+    #apt-get -y install tzdata
+    apt-get -y install g++ make zlib1g-dev libboost-dev libgmp-dev libgmpxx4ldbl git
+
+    git clone "https://github.com/crillab/d4"
+    cd /d4
+    git checkout "9b136b67491443954b0bd300aa15b03697053a7c"
+
+    make -j8
+    ls
+    echo "setup done"
+
+    cd /wrapper
+    make clean
+    make -j8
+    ls
+
+%runscript
+    /wrapper/wrap 64000 18000 /d4/d4 "$@"

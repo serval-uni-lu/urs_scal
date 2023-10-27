@@ -1,0 +1,6 @@
+/home/oz/Documents/projects/papers/eqv_pred/cnf_to_graph/build/CMakeFiles/cnf_to_graph.dir
+/home/oz/Documents/projects/papers/eqv_pred/cnf_to_graph/build/CMakeFiles/tw_to_graph.dir
+/home/oz/Documents/projects/papers/eqv_pred/cnf_to_graph/build/CMakeFiles/fpt.dir
+/home/oz/Documents/projects/papers/eqv_pred/cnf_to_graph/build/CMakeFiles/cnf_lp_deff.dir
+/home/oz/Documents/projects/papers/eqv_pred/cnf_to_graph/build/CMakeFiles/edit_cache.dir
+/home/oz/Documents/projects/papers/eqv_pred/cnf_to_graph/build/CMakeFiles/rebuild_cache.dir

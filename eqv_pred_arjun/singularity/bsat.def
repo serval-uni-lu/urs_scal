@@ -1,0 +1,25 @@
+BootStrap: docker
+From: ubuntu:22.04
+
+%files
+    ./bsat/ /bsat
+    ../wrapper /wrapper
+
+%post
+    echo "setup start"
+    apt-get -y update
+    apt-get -y install libz3-dev g++ make
+
+    cd bsat
+    make clean
+    make -j4
+
+    cd /wrapper
+    make clean
+    make -j8
+
+    ls
+    echo "setup done"
+
+%runscript
+    /wrapper/wrap 64000 18000 /bsat/bsat "$@"

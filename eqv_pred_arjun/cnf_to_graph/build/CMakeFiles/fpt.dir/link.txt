@@ -1,0 +1,1 @@
+/usr/bin/c++ -pthread -g -lgmp -lgmpxx CMakeFiles/fpt.dir/src/fpt.cpp.o CMakeFiles/fpt.dir/src/cnf.cpp.o CMakeFiles/fpt.dir/src/uf.cpp.o -o fpt 

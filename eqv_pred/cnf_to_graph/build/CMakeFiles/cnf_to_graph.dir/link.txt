@@ -1,0 +1,1 @@
+/usr/bin/c++ -pthread -g -lgmp -lgmpxx CMakeFiles/cnf_to_graph.dir/src/main.cpp.o CMakeFiles/cnf_to_graph.dir/src/cnf.cpp.o CMakeFiles/cnf_to_graph.dir/src/uf.cpp.o -o cnf_to_graph 
