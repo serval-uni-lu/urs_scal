@@ -1,0 +1,36 @@
+BootStrap: docker
+From: ubuntu:22.04
+
+%files
+    ../wrapper /wrapper
+
+%post
+    echo "setup start"
+    apt-get -y update
+
+    apt -y install git g++ make python3 python3-distutils
+
+    git clone https://github.com/RafaelTupynamba/quicksampler.git
+    git clone https://github.com/Z3Prover/z3.git
+
+    cd z3
+    git checkout 9635ddd8fceb6bdde7dc7725e696e6c123af22f4
+    cp ../quicksampler/check/sat_params.pyg src/sat/sat_params.pyg
+    cp ../quicksampler/check/dimacs.cpp src/sat/dimacs.cpp
+    cp ../quicksampler/check/dimacs_frontend.cpp src/shell/dimacs_frontend.cpp
+    python3 scripts/mk_make.py
+    cd build
+    make -j4
+    make install
+    cd ../..
+
+    cd quicksampler
+    make -j4
+
+    cd /wrapper
+    make clean
+    make -j8
+    ls
+
+%runscript
+    /wrapper/wrap 64000 18000 /quicksampler/quicksampler "$@"

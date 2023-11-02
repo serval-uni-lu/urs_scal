@@ -1,0 +1,23 @@
+BootStrap: docker
+From: ubuntu:22.04
+
+%files
+    ./sharpSAT /sharpSAT
+    ../wrapper /wrapper
+
+%post
+    echo "setup start"
+    apt-get -y update
+
+    apt-get -y install libgmp-dev libgmpxx4ldbl libgomp1 g++ make
+
+    ls
+    echo "setup done"
+
+    cd /wrapper
+    make clean
+    make -j8
+    ls
+
+%runscript
+    /wrapper/wrap 64000 18000 /sharpSAT "$@"

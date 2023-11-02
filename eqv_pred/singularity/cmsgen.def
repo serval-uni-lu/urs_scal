@@ -1,0 +1,31 @@
+BootStrap: docker
+From: ubuntu:22.04
+
+%files
+    ../wrapper /wrapper
+
+%post
+    echo "setup start"
+    apt-get -y update
+
+    apt-get -y install build-essential cmake git
+    apt-get -y install zlib1g-dev libboost-program-options-dev help2man
+
+    git clone https://github.com/meelgroup/cmsgen
+    cd cmsgen
+    git checkout 28dfe46b4e08165ec3b61b729e34598ad72cf9c0
+
+    mkdir build
+    cd build
+    cmake ..
+    make -j4
+    make install
+    ldconfig
+
+    cd /wrapper
+    make clean
+    make -j8
+    ls
+
+%runscript
+    /wrapper/wrap 64000 18000 /cmsgen/build/cmsgen "$@"
