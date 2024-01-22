@@ -156,24 +156,6 @@ def gen_tables(data, title):
     orig = data
 
     print("## " + title + "\n")
-    # data = data[data['state'] != "mem"]
-
-    # d_list = [data['#var'], data['#clause'], data['#literal'], data.mc_log, data.tw, data['lp'], data['#mis'], data['#eqv'], data['time_z3'], data['mem_z3'], data.state == "timeout"]
-    # n_list = ['#v', '#c', '#l', 'mc_log', 'tw', 'deff', '#mis', '#eqv', 'time_z3', 'mem_z3', 'timeout']
-
-    # r = correlation_matrix(d_list, n_list, highligh, stats.pointbiserialr)
-    # print("### Point-biserial correlation coefficient (timeout)\n")
-    # print(r)
-
-    # data = orig
-    # data = data[data['state'] != "timeout"]
-
-    # d_list = [data['#var'], data['#clause'], data['#literal'], data.mc_log, data.tw, data['lp'], data['#mis'], data['#eqv'], data['time_z3'], data['mem_z3'], data.state == "mem"]
-    # n_list = ['#v', '#c', '#l', 'mc_log', 'tw', 'deff', '#mis', '#eqv', 'time_z3', 'mem_z3', 'out of mem']
-
-    # r = correlation_matrix(d_list, n_list, highligh, stats.pointbiserialr)
-    # print("### Point-biserial correlation coefficient (out of mem)\n")
-    # print(r)
 
     data = orig
     data = data[data['state'] == "done"]
@@ -209,19 +191,15 @@ def gen_tables(data, title):
     print(str(len(data)) + " elems\n")
     print(r)
 
-    # r = correlation_matrix(d_list, n_list, highligh, stats.pearsonr)
-    # print("### Pearson correlation\n")
-    # print(r)
+    data = orig
+    d_list = [data['#var'], data['#clause'], data['#literal'], data.tw, data['lp'], data['#mis'], data['#eqv'], data['time_z3'], data['mem_z3'], data['state'] != "done"]
+    n_list = ['#v', '#c', '#l', 'tw', 'deff', '#mis', '#eqv', 'time_z3', 'mem_z3', 'done']
 
+    r = correlation_matrix(d_list, n_list, highligh, stats.pointbiserialr)
+    print("### Point biserial r (done?)\n")
+    print(str(len(data)) + " elems\n")
+    print(r)
 
-    # d_list = [data['#var'], data['#clause'], data['#literal'], data.t, data.k, data.s, data.tw, data['lp'], data['#mis'], data['#eqv'], np.log2(data['time_ms']), np.log2(data['mem_ms']), np.log2(data['time_z3']), np.log2(data['mem_z3']), np.log2(data.time), np.log2(data.mem)]
-    # n_list = ['#v', '#c', '#l', 't', 'k', 's', 'tw', 'deff', '#mis', '#eqv', 'log2(time_ms)', 'log2(mem_ms)', 'log2(time_z3)', 'log2(mem_z3)', 'log2(time)', 'log2(mem)']
-    # d_list = [data['#var'], data['#clause'], data['#literal'], data.mc_log, data.tw, data['lp'], data['#mis'], data['#eqv'], np.log2(data['time_z3']), np.log2(data['mem_z3']), np.log2(data.time), np.log2(data.mem)]
-    # n_list = ['#v', '#c', '#l', 'mc_log', 'tw', 'deff', '#mis', '#eqv', 'l2(time_z3)', 'l2(mem_z3)', 'l2(time)', 'l2(mem)']
-
-    # r = correlation_matrix(d_list, n_list, highligh, stats.pearsonr)
-    # print("### Pearson correlation with log2 on time\n")
-    # print(r)
 
 
 
