@@ -1,3 +1,7 @@
+# Benchmarks
+
+The Benchmark files (DIMACS) are available at https://github.com/diverse-project/samplingfm
+
 # eqv_pred
 
 # eqv
