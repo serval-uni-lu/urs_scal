@@ -1,0 +1,20 @@
+BootStrap: docker
+From: ubuntu:22.04
+
+%files
+    ./ /eqv
+
+%post
+    echo "setup start"
+    apt-get -y update
+    apt-get -y install libz3-dev make g++
+
+    cd eqv
+    make clean
+    make -j8
+
+    ls
+    echo "setup done"
+
+%runscript
+    /eqv/eqv "$@"
