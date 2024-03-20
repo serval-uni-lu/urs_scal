@@ -5,6 +5,7 @@
 #include "Z3CNF.hpp"
 
 #include <random>
+#include <sstream>
 #include <algorithm>
 
 Z3CNF::Z3CNF() : context(), solver(context) {
